@@ -1,0 +1,14 @@
+theme = rose-pine
+
+font-size = 15
+
+background-opacity = 0.93
+background-blur-radius = 20
+
+macos-titlebar-style = tabs
+
+font-feature = -liga
+font-feature = -calt
+font-feature = -dlig
+
+auto-update = check
