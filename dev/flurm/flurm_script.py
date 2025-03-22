@@ -4,7 +4,7 @@ from run_scripts.utils import generate_hparam_combinations_for_algorithms, forma
 import argparse
 import yaml
 
-NUM_GPUS = 8
+NUM_GPUS = 4
 
 
 def create_tmux_sessions(commands):
@@ -70,7 +70,7 @@ def get_parm_dicts(yaml_file):
     with open(yaml_file, 'r') as file:
         try:
             hparams = yaml.safe_load(file)
-            listed_hparams = {key : value if isinstance(value, list) else [value] for key, value in hparams.items() }
+            listed_hparams = {key : value if isinstance(value, list) else [value] for key, value in hparams.items()}
 
         except yaml.YAMLError as exc:
             print(exc)
