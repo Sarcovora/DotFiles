@@ -111,6 +111,7 @@ alias z='__zoxide_z'
 alias zi='__zoxide_zi'
 
 alias v='nvim'
+alias nv='NO_AUTO_SESSION=1 nvim' # no auto-session vim
 
 alias bat='bat -A'
 
@@ -121,6 +122,7 @@ alias p='procs'
 alias nf='neofetch'
 
 alias savelife='~/LifeVault/.commit_push.bash'
+alias sl='~/LifeVault/.commit_push.bash'
 alias lifepull='~/LifeVault/.pull.bash'
 alias lgst='~/LifeVault/.gstatus.bash'
 
