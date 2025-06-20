@@ -56,7 +56,7 @@ hs.hotkey.bind({ "alt", "ctrl" }, "down", function()
 	MoveWindow(0, moveAmt)
 end)
 
--- NOTE: YUIO (HJKL shifted up one row) for larger movements
+-- NOTE: Larger movements (A, D, W, S)
 local lgMoveAmt = 45
 hs.hotkey.bind({ "alt", "ctrl" }, "a", function()
 	MoveWindow(-1 * lgMoveAmt, 0)
@@ -77,6 +77,9 @@ hs.hotkey.bind({ "alt", "ctrl" }, "m", function()
 end)
 hs.hotkey.bind({ "alt", "ctrl" }, "r", function()
 	ResizeWindow(1375, 1085)
+end)
+hs.hotkey.bind({ "alt", "ctrl" }, "b", function()
+	ResizeWindow(1492, 1125)
 end)
 
 -- Bind a key to print the size of the current selected window
