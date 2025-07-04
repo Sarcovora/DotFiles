@@ -37,27 +37,33 @@ end) -- google calendar
 hs.hotkey.bind(hyper, "D", function()
 	SwitchToAndFromApp("com.hnc.Discord")
 end) -- discord
-hs.hotkey.bind(hyper, "E", function()
-	SwitchToAndFromApp("com.apple.mail")
-end) -- apple mail
+-- hs.hotkey.bind(hyper, "E", function()
+-- 	SwitchToAndFromApp("com.apple.mail")
+-- end) -- apple mail
 hs.hotkey.bind(hyper, "F", function()
 	SwitchToAndFromApp("com.apple.finder")
 end) -- finder
 hs.hotkey.bind(hyper, "G", function()
 	SwitchToAndFromApp("com.mitchellh.ghostty")
 end) -- ghostty
+hs.hotkey.bind(hyper, "I", function()
+	SwitchToAndFromApp("company.thebrowser.dia")
+end) -- dia
 hs.hotkey.bind(hyper, "J", function()
 	SwitchToAndFromApp("com.brave.Browser")
 end) -- Brave
-hs.hotkey.bind(hyper, "K", function()
-	SwitchToAndFromApp("net.ankiweb.dtop")
-end) -- anki
+-- hs.hotkey.bind(hyper, "K", function()
+-- 	SwitchToAndFromApp("net.ankiweb.dtop")
+-- end) -- anki
 hs.hotkey.bind(hyper, "L", function()
 	SwitchToAndFromApp("com.tinyspeck.slackmacgap")
 end) -- slack
 hs.hotkey.bind(hyper, "M", function()
 	SwitchToAndFromApp("com.apple.MobileSMS")
 end) -- messages
+hs.hotkey.bind(hyper, "N", function()
+	SwitchToAndFromApp("notion.id")
+end) -- notion
 hs.hotkey.bind(hyper, "O", function()
 	SwitchToAndFromApp("md.obsidian")
 end) -- obsidian
@@ -76,9 +82,12 @@ end) -- sioyek
 hs.hotkey.bind(hyper, "U", function()
 	SwitchToAndFromApp("com.apple.Music")
 end) -- apple music
+-- hs.hotkey.bind(hyper, "V", function()
+-- 	SwitchToAndFromApp("com.microsoft.VSCode")
+-- end) -- vscode
 hs.hotkey.bind(hyper, "V", function()
-	SwitchToAndFromApp("com.microsoft.VSCode")
-end) -- vscode
+	SwitchToAndFromApp("com.todesktop.230313mzl4w4u92")
+end) -- cursor
 hs.hotkey.bind(hyper, "X", function()
 	SwitchToAndFromApp("com.apple.findmy")
 end) -- chat gpt
@@ -89,7 +98,8 @@ hs.hotkey.bind(hyper, "Z", function()
 	SwitchToAndFromApp("org.zotero.zotero")
 end) -- zotero
 
--- NOTE: Still have H, I, J, N, W available
+-- NOTE: Still have H, I, J, K, N, W available
+-- freed E from mail
 -- T is used for TOT
 
 -- show the bundleid of the currently open window
