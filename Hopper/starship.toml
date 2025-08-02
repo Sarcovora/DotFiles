@@ -15,9 +15,9 @@ error_symbol = '[✖](bold fg:red bg:base)[](bold base)'
 style = 'bold fg:blue bg:base'
 format = '[](bold base)[$path ]($style)[$read_only]($read_only_style)'
 read_only_style = 'bold fg:red bg:mantle'
-truncation_length = 5
+truncation_length = 8
 truncation_symbol = '…/'
-truncate_to_repo = true
+truncate_to_repo = false
 
 [golang]
 format = '[ ](bold cyan)'
@@ -30,9 +30,8 @@ symbol=" "
 [git_status]
 format = '[\[$all_status$ahead_behind\] ](bold bg:base fg:maroon)'
 style = 'bold fg:maroon bg:base'
-disabled = ["status_clean"]
+# disabled = ["status_clean"]
 
-# What's with the spacing?
 [os]
 disabled=true
 
