@@ -28,6 +28,27 @@ function ResizeWindow(newWidth, newHeight)
 	win:setFrame(f)
 end
 
+-- Resize window function: sets the window to a specific width and height, expanding from center
+function ResizeWindowFromCenter(newWidth, newHeight)
+	local win = hs.window.focusedWindow()
+	if not win then
+		return
+	end
+	local f = win:frame()
+
+	-- Calculate the center point of the current window
+	local centerX = f.x + f.w / 2
+	local centerY = f.y + f.h / 2
+
+	-- Set new dimensions and position to keep the window centered
+	f.x = centerX - newWidth / 2
+	f.y = centerY - newHeight / 2
+	f.w = newWidth
+	f.h = newHeight
+
+	win:setFrame(f)
+end
+
 -- Function to print the size of the current selected window.
 function PrintWindowSize()
 	local win = hs.window.focusedWindow()
@@ -73,13 +94,23 @@ end)
 
 -- Bind a key to resize the window to a specific size (w, h)
 hs.hotkey.bind({ "alt", "ctrl" }, "m", function()
-	ResizeWindow(1800, 1125) -- Macbook 14" Screen
+	ResizeWindowFromCenter(1800, 1125) -- Macbook 14" Screen
 end)
 hs.hotkey.bind({ "alt", "ctrl" }, "r", function()
-	ResizeWindow(1375, 1085)
+	ResizeWindowFromCenter(1375, 1085)
 end)
-hs.hotkey.bind({ "alt", "ctrl" }, "b", function()
-	ResizeWindow(1492, 1125)
+hs.hotkey.bind({ "alt", "ctrl" }, "b", function() -- Match the height of the macbook screen but smaller
+	ResizeWindowFromCenter(1492, 1125)
+end)
+-- Widescreen full screen is: 3440w x 1415h
+hs.hotkey.bind({ "alt", "ctrl" }, "i", function() -- Even gaps on top and bottom (15)
+	ResizeWindowFromCenter(1955, 1385)
+end)
+hs.hotkey.bind({ "alt", "ctrl" }, "u", function() -- Even gaps on top and bottom (15)
+	ResizeWindowFromCenter(1440, 1385)
+end)
+hs.hotkey.bind({ "alt", "ctrl" }, "y", function() -- Even gaps on top and bottom (15) BUT wider than the preset
+	ResizeWindowFromCenter(2545, 1385)
 end)
 
 -- Bind a key to print the size of the current selected window
