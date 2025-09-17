@@ -166,10 +166,6 @@ eval $(thefuck --alias)
 # export MUJOCO_PY_MJKEY_PATH=~/.mujoco/mjkey.txt
 
 # PATH
-
-
-# CodeWhisperer post block. Keep at the bottom of this file.
-# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 export UTCS_USERNAME="evankuo"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -177,3 +173,9 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+
+PATH=~/.console-ninja/.bin:$PATH
