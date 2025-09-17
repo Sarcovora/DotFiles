@@ -46,9 +46,9 @@ end) -- finder
 hs.hotkey.bind(hyper, "G", function()
 	SwitchToAndFromApp("com.mitchellh.ghostty")
 end) -- ghostty
-hs.hotkey.bind(hyper, "I", function()
-	SwitchToAndFromApp("company.thebrowser.dia")
-end) -- dia
+-- hs.hotkey.bind(hyper, "I", function()
+-- 	SwitchToAndFromApp("company.thebrowser.dia")
+-- end) -- dia
 hs.hotkey.bind(hyper, "J", function()
 	SwitchToAndFromApp("com.brave.Browser")
 end) -- Brave
@@ -76,24 +76,24 @@ end) -- notes
 hs.hotkey.bind(hyper, "R", function()
 	SwitchToAndFromApp("com.apple.reminders")
 end) -- reminders
-hs.hotkey.bind(hyper, "S", function()
-	SwitchToAndFromApp("info.sioyek.sioyek")
-end) -- sioyek
+-- hs.hotkey.bind(hyper, "S", function()
+-- 	SwitchToAndFromApp("info.sioyek.sioyek")
+-- end) -- sioyek
 hs.hotkey.bind(hyper, "U", function()
 	SwitchToAndFromApp("com.apple.Music")
 end) -- apple music
--- hs.hotkey.bind(hyper, "V", function()
--- 	SwitchToAndFromApp("com.microsoft.VSCode")
--- end) -- vscode
 hs.hotkey.bind(hyper, "V", function()
-	SwitchToAndFromApp("com.todesktop.230313mzl4w4u92")
-end) -- cursor
+	SwitchToAndFromApp("com.microsoft.VSCode")
+end) -- vscode
+-- hs.hotkey.bind(hyper, "V", function()
+-- 	SwitchToAndFromApp("com.todesktop.230313mzl4w4u92")
+-- end) -- cursor
 hs.hotkey.bind(hyper, "X", function()
 	SwitchToAndFromApp("com.apple.findmy")
-end) -- chat gpt
-hs.hotkey.bind(hyper, "Y", function()
-	SwitchToAndFromApp("com.openai.chat")
-end) -- gpt
+end) -- findmy
+-- hs.hotkey.bind(hyper, "Y", function()
+-- 	SwitchToAndFromApp("com.openai.chat")
+-- end) -- gpt
 hs.hotkey.bind(hyper, "Z", function()
 	SwitchToAndFromApp("org.zotero.zotero")
 end) -- zotero

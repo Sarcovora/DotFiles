@@ -102,6 +102,13 @@ end)
 hs.hotkey.bind({ "alt", "ctrl" }, "b", function() -- Match the height of the macbook screen but smaller
 	ResizeWindowFromCenter(1492, 1125)
 end)
+hs.hotkey.bind({ "alt", "ctrl" }, "f", function() -- Good finder window size (smaller than macbook screen size)
+	ResizeWindowFromCenter(1114, 727)
+end)
+hs.hotkey.bind({ "alt", "ctrl" }, "e", function() -- Good squarish size for mini-arc
+	ResizeWindowFromCenter(1326, 1000)
+end)
+
 -- Widescreen full screen is: 3440w x 1415h
 hs.hotkey.bind({ "alt", "ctrl" }, "i", function() -- Even gaps on top and bottom (15)
 	ResizeWindowFromCenter(1955, 1385)
