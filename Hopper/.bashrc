@@ -99,9 +99,12 @@ alias ta='tmux a -t'
 alias v='/home/ekuo/.local/bin/nvim/squashfs-root/AppRun'
 alias nv='NO_AUTO_SESSION=1 /home/ekuo/.local/bin/nvim/squashfs-root/AppRun' # no auto-session vim
 
+alias tree='/home/ekuo/deb/usr/bin/tree'
+
 alias ns='nvidia-smi'
 alias bt='/data/ekuo/Downloads/btop/bin/btop'
 alias lg='lazygit'
+alias hn='hostname'
 
 alias ca='conda activate'
 alias gst='git status'
@@ -151,6 +154,162 @@ tt () {
     fi
 }
 
+cuda_select() {
+    local RED='\033[0;31m'
+    local GREEN='\033[0;32m'
+    local YELLOW='\033[1;33m'
+    local BLUE='\033[0;34m'
+    local NC='\033[0m' # No Color
+
+    # Current status
+    echo -e "${BLUE}Current CUDA_VISIBLE_DEVICES:${NC} ${CUDA_VISIBLE_DEVICES:-'(not set)'}"
+    echo -ne "${YELLOW}Do you want to change it? [y/N]: ${NC}"
+    read -r response
+
+    # Default to 'N' if empty response
+    response=${response:-N}
+
+    if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        echo -e "${RED}Aborted.${NC}"
+        return 0
+    fi
+
+    # Check if nvidia-smi is available
+    if ! command -v nvidia-smi &> /dev/null; then
+        echo -e "${RED}Error: nvidia-smi not found. Make sure NVIDIA drivers are installed.${NC}"
+        return 1
+    fi
+
+    # Get available GPU devices
+    echo -e "\n${BLUE}Available GPU devices:${NC}"
+    nvidia-smi --list-gpus | nl -v 0 -w 2 -s ': '
+
+    # Also show a compact format with GPU info
+    echo -e "\n${BLUE}Device details:${NC}"
+    nvidia-smi --query-gpu=index,name,memory.total,utilization.gpu --format=csv,noheader,nounits | \
+    awk -F', ' '{printf "%d: %s (%.0f MB, %d%% util)\n", $1, $2, $3, $4}'
+
+    # Get total number of GPUs
+    local gpu_count
+    gpu_count=$(nvidia-smi --list-gpus | wc -l)
+
+    if [ "$gpu_count" -eq 0 ]; then
+        echo -e "${RED}No GPUs found.${NC}"
+        return 1
+    fi
+
+    # Prompt for device selection
+    echo -ne "\n${YELLOW}Enter device number(s) (0-$((gpu_count-1))), comma-separated, 'all' for all devices, or 'none' to clear: ${NC}"
+    read -r device_input
+
+    # Handle empty input
+    if [ -z "$device_input" ]; then
+        echo -e "${RED}No input provided. Aborted.${NC}"
+        return 1
+    fi
+
+    # Handle 'none' option
+    if [[ "$device_input" == "none" ]]; then
+        unset CUDA_VISIBLE_DEVICES
+        echo -e "${GREEN}CUDA_VISIBLE_DEVICES cleared (unset).${NC}"
+        return 0
+    fi
+
+    # Handle 'all' option
+    if [[ "$device_input" == "all" ]]; then
+        device_input=$(seq -s, 0 $((gpu_count-1)))
+    fi
+
+    # Validate input format (numbers and commas only)
+    if [[ ! "$device_input" =~ ^[0-9,]+$ ]]; then
+        echo -e "${RED}Invalid input format. Use numbers and commas only (e.g., 0,1,2).${NC}"
+        return 1
+    fi
+
+    # Convert comma-separated string to array and validate each device
+    IFS=',' read -ra devices <<< "$device_input"
+    for device in "${devices[@]}"; do
+        if [ "$device" -ge "$gpu_count" ] || [ "$device" -lt 0 ]; then
+            echo -e "${RED}Invalid device number: $device. Valid range: 0-$((gpu_count-1))${NC}"
+            return 1
+        fi
+    done
+
+    # Set the environment variable
+    export CUDA_VISIBLE_DEVICES="$device_input"
+    echo -e "${GREEN}CUDA_VISIBLE_DEVICES set to: $device_input${NC}"
+
+    # Show confirmation with selected GPU names
+    echo -e "\n${BLUE}Selected GPUs:${NC}"
+    for device in "${devices[@]}"; do
+        gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader,nounits -i "$device")
+        echo -e "  Device $device: $gpu_name"
+    done
+}
+
+cas () {
+    if ! command -v conda &> /dev/null; then
+        echo "Error: conda is not installed or not in PATH"
+        return 1
+    fi
+
+    echo "Available conda environments:"
+    echo "=============================="
+
+    local -a envs paths
+    local i=1
+    local line env_name env_path py_version python_exe
+
+    while IFS= read -r line; do
+        [[ "$line" =~ ^#.* ]] && continue
+        [[ -z "$line" ]] && continue
+
+        if [[ "$line" =~ ^[[:space:]]+(/.*) ]]; then
+            env_path="${BASH_REMATCH[1]}"
+            env_name=$(basename "$env_path")
+        else
+            env_name=$(echo "$line" | awk '{print $1}')
+            env_path=$(echo "$line" | awk '{print $NF}')
+        fi
+
+        py_version="N/A"
+        for python_exe in "$env_path/bin/python" "$env_path/bin/python3" "$env_path/python.exe" "$env_path/Scripts/python.exe"; do
+            if [ -f "$python_exe" ]; then
+                py_version=$("$python_exe" --version 2>&1 | awk '{print $2}')
+                break
+            fi
+        done
+
+        envs[$i]="$env_name"
+        paths[$i]="$env_path"
+
+        printf "%2d) %-30s (Python %s)\n" $i "$env_name" "$py_version"
+        ((i++))
+    done < <(conda env list)
+
+    if [ ${#envs[@]} -eq 0 ]; then
+        echo "No conda environments found"
+        return 1
+    fi
+
+    echo ""
+    echo -n "Select environment number (or press Enter to cancel): "
+    read selection
+
+    if [ -z "$selection" ]; then
+        echo "Cancelled"
+        return 0
+    fi
+
+    if ! [[ "$selection" =~ ^[0-9]+$ ]] || [ "$selection" -lt 1 ] || [ "$selection" -gt $((i-1)) ]; then
+        echo "Invalid selection"
+        return 1
+    fi
+
+    echo "Activating: ${envs[$selection]}"
+    conda activate "${paths[$selection]}"
+}
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/data/ekuo/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -171,13 +330,17 @@ conda config --set auto_activate_base false
 # PATHS
 export PATH="/home/ekuo/.local/bin/yaz_file_explorer:$PATH"
 export PATH="/home/ekuo/.local/bin:$PATH"
-export LD_LIBRARY_PATH="/home/ekuo/.mujoco/mujoco-3.3.3/bin:$LD_LIBRARY_PATH"
+# export LD_LIBRARY_PATH="/home/ekuo/.mujoco/mujoco-3.3.3/bin:$LD_LIBRARY_PATH"
+# export MUJOCO_PY_MJKEY_PATH="/home/ekuo/.mujoco/mjkey.txt"
+# export MUJOCO_PY_MUJOCO_PATH="/home/ekuo/.mujoco/mujoco-3.3.3/"
+
 # help with headless
-export MUJOCO_GL=egl
-export PYOPENGL_PLATFORM=egl
+# export MUJOCO_GL=egl
+# export PYOPENGL_PLATFORM=egl
 
 . "$HOME/.cargo/env"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia
